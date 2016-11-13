@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>购物车的结算</title>
+</head>
+<script type="text/javascript">
+	
+	function add(btnObj){
+		var tdObj=btnObj.parentNode;
+		for(var i=0;i<tdObj.childNodes.length;i++){
+			var childNode=tdObj.childNodes[i];
+			if(childNode.nodeName==="INPUT"&&childNode.type==="text"){
+				var oldData=parseInt(childNode.value);
+				oldData++;
+				childNode.value=oldData;
+			}
+		}
+		calTotal();
+	}
+	function sub(btnObj){
+		var tdObj=btnObj.parentNode;
+		for(var i=0;i<tdObj.childNodes.length;i++){
+			var childNode=tdObj.childNodes[i];
+			if(childNode.nodeName==="INPUT"&&childNode.type==="text"){
+				var oldData=parseInt(childNode.value);
+				oldData--;
+				childNode.value=oldData;
+			}
+		}
+		calTotal();
+	}
+	function calTotal(){
+		var tableObj=document.getElementById("shoppingCart");
+		var rows=tableObj.getElementsByTagName("tr");
+		var total=0;
+		for(var i=1;i<rows.length;i++){
+			var curRow=rows[i];
+			var price=curRow.getElementsByTagName("td")[0].innerHTML;
+			var q=curRow.getElementsByTagName("td")[1].getElementsByTagName("input")[1].value;
+			var sum=parseFloat(price)*parseFloat(q);
+			curRow.getElementsByTagName("td")[2].innerHTML=sum.toFixed(2);
+			total+=sum;
+		}
+		document.getElementById("spanTotal").innerHTML=total.toFixed(2);
+	}
+
+</script>
+<body>
+<form>
+	<legend style="margin-top:20px;">购物车</legend>
+	<table border="1" id="shoppingCart">
+		<tr><td>价格</td><td>数量</td><td>小计</td></tr>
+		<tr>
+			<td>10.00</td>
+			<td>
+				<input type="button" value="-" onclick="sub(this);">
+				<input type="text" value="1">
+				<input type="button" value="+" onclick="add(this);">
+			</td>
+			<td>10.00</td>
+		</tr>
+		<tr>
+			<td>20.00</td>
+			<td>
+				<input type="button" value="-" onclick="sub(this);">
+				<input type="text" value="1">
+				<input type="button" value="+" onclick="add(this);">
+			</td>
+			<td>20.00</td>
+		</tr>
+	</table>
+	<span id="spanTotal">00.00</span>
+</form>
+</body>
+</html>
